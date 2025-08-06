@@ -63,7 +63,16 @@ class _TaskWidgetState extends State<TaskWidget> {
             children: [
               Text(
                 widget.title.toUpperCase(),
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: widget.status == TaskStatus.completed
+                      ? Colors.grey
+                      : Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  decoration: widget.status == TaskStatus.completed
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
+                ),
               ),
               Text(
                 widget.description,
