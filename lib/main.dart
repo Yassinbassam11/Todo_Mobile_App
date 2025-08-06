@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:todo_starter/screens/signin_screen.dart';
@@ -19,9 +20,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SigninScreen(),
+      //home: SigninScreen(),
+      home: FirebaseAuth.instance.currentUser != null
+          ? const TodoScreen()
+          : const SigninScreen(),
     );
   }
 }

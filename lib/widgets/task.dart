@@ -59,6 +59,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                 : Icon(Icons.circle_outlined),
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 widget.title.toUpperCase(),
