@@ -55,8 +55,8 @@ class _TaskWidgetState extends State<TaskWidget> {
               });
             },
             icon: widget.status == TaskStatus.completed
-                ? Icon(Icons.check_circle, color: Colors.purple[800])
-                : Icon(Icons.circle_outlined),
+                ? Icon(Icons.check_circle, color: Colors.purple[800], size: 30)
+                : Icon(Icons.circle_outlined, size: 30, color: Colors.grey),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

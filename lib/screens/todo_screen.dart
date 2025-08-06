@@ -52,13 +52,12 @@ class TodoScreen extends StatelessWidget {
         child: SafeArea(
           child: ListView.separated(
             padding: EdgeInsets.only(top: 12),
-            //physics: ClampingScrollPhysics(),
+            //physics: BouncingScrollPhysics(),
             separatorBuilder: (context, index) => SizedBox(height: 0),
             itemCount: 10, // Example count, replace with your task list length
             itemBuilder: (context, index) => TaskWidget(
               title: "Read a book",
               description: "Read 'The Great Gatsby'",
-              //status: TaskStatus.completed,
             ),
             // child: Column(
             //   children: [
@@ -77,6 +76,48 @@ class TodoScreen extends StatelessWidget {
             // ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.purple[800],
+        shape: const CircleBorder(),
+        onPressed: () {
+          // Add new task logic here
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Add New Task'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Task Title'),
+                    ),
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Description'),
+                    ),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Cancel'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Logic to add the task
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Add Task'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
