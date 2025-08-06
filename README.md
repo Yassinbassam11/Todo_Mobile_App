@@ -64,10 +64,11 @@ A modern, feature-rich Todo application built with Flutter and Firebase, providi
 - **Todo Screen**: Main task management interface with task list
 
 ### Key UI Components
-- Custom text fields with validation
-- Task widgets with completion status
-- Material Design app bars and navigation
-- Responsive layouts for different screen sizes
+- **Custom Text Fields**: Professional input components with validation and styling
+- **Task Widgets**: Interactive task cards with status indicators and visual feedback
+- **Status Icons**: Size-optimized (30px) icons with color coding for task states
+- **Material Design**: App bars, navigation, and consistent component styling
+- **Responsive Layouts**: Adaptive design for different screen sizes and orientations
 
 ## 🏗️ Project Structure
 
@@ -94,9 +95,12 @@ lib/
 
 #### TaskWidget
 - Displays individual tasks with title and description
-- Toggle functionality between pending/completed states
-- Visual feedback with icons and text styling
-- Material Design card layout with shadows
+- Interactive toggle functionality between pending/completed states
+- Enhanced visual feedback with size-optimized icons (30px)
+- Color-coded status indicators (purple for completed, grey for pending)
+- Material Design card layout with subtle shadows and rounded corners
+- Responsive layout with proper spacing and typography hierarchy
+- Strikethrough text effect for completed tasks
 
 #### Custom Text Fields
 - Email validation with proper formatting
@@ -112,25 +116,56 @@ lib/
 
 ## 🎨 Design System
 
-### Color Scheme
-- **Primary**: Purple 800 (`Colors.purple[800]`)
-- **Background**: Light grey (`Colors.grey[300]`)
-- **Text**: Black for active, grey for secondary
-- **Cards**: White with subtle shadows
+### Color Scheme & Visual Design
+- **Primary Color**: Purple 800 (`Colors.purple[800]`) for branding and completed tasks
+- **Background**: Light grey (`Colors.grey[300]`) for app background
+- **Cards**: Pure white with subtle shadow effects for depth
+- **Text Colors**: 
+  - Black for active task titles
+  - Grey for descriptions and secondary text
+  - Grey for pending task icons
+- **Interactive Elements**: Color transitions for status changes
+- **Shadows**: Soft grey shadows with 0.2 opacity for card elevation
 
-### Typography
-- **Headers**: Bold, 24px for main titles
-- **Task Titles**: Bold, 18px, uppercase
-- **Descriptions**: Regular, 14px, grey color
-- **Body Text**: 16px for general content
+### Typography & Iconography
+- **App Title**: Bold, 24px for main screen headers
+- **Task Titles**: Bold, 18px, uppercase styling for emphasis
+- **Task Descriptions**: Regular, 14px, grey color for readability
+- **Body Text**: 16px for forms and general content
+- **Icons**: 30px size for task status indicators
+- **Text Effects**: Strikethrough decoration for completed tasks
+
+## 🎯 Current Implementation Details
+
+### Task Management System
+- **StatefulWidget**: TaskWidget uses local state for immediate UI updates
+- **Status Enum**: Clean TaskStatus enum (pending/completed) for type safety
+- **Visual Feedback**: Instant visual changes when toggling task status
+- **Icon States**: 
+  - `Icons.check_circle` (purple, 30px) for completed tasks
+  - `Icons.circle_outlined` (grey, 30px) for pending tasks
+
+### UI/UX Enhancements
+- **Card Design**: Elevated cards with 8px border radius
+- **Spacing**: 16px padding inside cards, 12px horizontal margins
+- **Shadows**: Multi-layer shadow effect for depth perception
+- **Typography**: Uppercase task titles for visual hierarchy
+- **Interactive Areas**: Properly sized touch targets for accessibility
+
+### Code Quality
+- Proper widget separation for maintainability
+- Consistent naming conventions throughout the codebase
+- Flutter linting rules enforced for code quality
+- Comprehensive error handling for authentication flows
 
 ## 🔐 Security Features
 
-- Firebase Authentication integration
-- Email format validation
-- Password strength requirements
-- Secure session management
-- Error handling for authentication failures
+- Firebase Authentication integration with secure token management
+- Email format validation with regex patterns
+- Password strength requirements and confirmation matching
+- Secure session management with automatic token refresh
+- Comprehensive error handling for authentication failures
+- Protection against common authentication vulnerabilities
 
 ## 🚀 Future Enhancements
 
@@ -160,9 +195,11 @@ lib/
 - Comprehensive error handling
 
 ### Performance Considerations
-- Efficient widget rebuilding with setState
-- Optimized list rendering with ListView.separated
-- Minimal Firebase calls for authentication
+- Efficient widget rebuilding with targeted setState calls
+- Optimized list rendering with ListView.separated for smooth scrolling
+- Minimal Firebase authentication calls with session persistence
+- Lightweight widget tree structure for fast rendering
+- Proper state management to prevent unnecessary rebuilds
 
 ## 🤝 Contributing
 
