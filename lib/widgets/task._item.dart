@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:todo_starter/main.dart';
 import 'package:todo_starter/models/task_model.dart';
 
 // ignore: must_be_immutable
 class TaskWidget extends StatefulWidget {
   final TaskModel model;
-  TaskWidget({super.key, required this.model});
+  VoidCallback? emptyFun;
+  TaskWidget({super.key, required this.model, this.emptyFun});
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();
@@ -62,12 +64,21 @@ class _TaskWidgetState extends State<TaskWidget> {
               ),
               Text(
                 widget.model.description,
-                style: TextStyle(fontSize: 14, color: Colors.grey),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                  decoration: widget.model.status == TaskStatus.completed
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
+                ),
               ),
             ],
           ),
           Spacer(),
-          Icon(Icons.more_vert, color: Colors.grey),
+          IconButton(
+            onPressed: widget.emptyFun,
+            icon: Icon(Icons.remove_circle_outline, color: Colors.grey),
+          ),
         ],
       ),
     );

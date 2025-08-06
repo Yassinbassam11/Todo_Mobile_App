@@ -18,4 +18,12 @@ class AppBrain {
       status: TaskStatus.pending,
     ),
   ];
+
+  void addTask(TaskModel task) {
+    tasks.add(task);
+  }
+
+  void removeTask(String id) {
+    tasks.removeWhere((task) => task.id == id);
+  }
 }

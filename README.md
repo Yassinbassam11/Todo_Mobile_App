@@ -5,9 +5,12 @@ A modern, feature-rich Todo application built with Flutter and Firebase, providi
 ## 🌟 Features
 
 ### Core Functionality
-- ✅ **Task Management**: Create, view, and manage your daily tasks
+- ✅ **Task Management**: Create, view, and manage your daily tasks with full CRUD operations
+- ➕ **Add New Tasks**: Floating Action Button with dialog interface for quick task creation
 - 🔄 **Task Status Toggle**: Mark tasks as completed or pending with a single tap
 - 📝 **Task Details**: Add titles and descriptions to your tasks
+- 🗂️ **Task Model**: Structured data management with TaskModel class
+- 🧠 **AppBrain**: Centralized task management system with pre-loaded sample data
 - 🎨 **Intuitive UI**: Clean, modern interface with Material Design principles
 
 ### Authentication & Security
@@ -19,10 +22,13 @@ A modern, feature-rich Todo application built with Flutter and Firebase, providi
 
 ### User Experience
 - 📱 **Responsive Design**: Optimized for various screen sizes
-- ⚡ **Real-time Updates**: Instant task status changes
+- ⚡ **Real-time Updates**: Instant task status changes with local state management
 - 🎯 **Form Validation**: Smart input validation for all forms
 - 🔍 **Password Visibility**: Toggle password visibility during input
 - 📋 **Custom Components**: Reusable UI components for consistency
+- ➕ **Quick Task Creation**: Floating Action Button with modal dialog
+- 🗑️ **Task Actions**: Delete functionality accessible from app bar
+- 📊 **Dynamic Lists**: ListView.builder for efficient task rendering
 
 ## 🚀 Getting Started
 
@@ -65,8 +71,10 @@ A modern, feature-rich Todo application built with Flutter and Firebase, providi
 
 ### Key UI Components
 - **Custom Text Fields**: Professional input components with validation and styling
-- **Task Widgets**: Interactive task cards with status indicators and visual feedback
+- **Task Widgets**: Interactive task cards with TaskModel integration and visual feedback
 - **Status Icons**: Size-optimized (30px) icons with color coding for task states
+- **Floating Action Button**: Purple-themed FAB with add icon for quick task creation
+- **Modal Dialogs**: Alert dialogs for task creation with form inputs
 - **Material Design**: App bars, navigation, and consistent component styling
 - **Responsive Layouts**: Adaptive design for different screen sizes and orientations
 
@@ -74,14 +82,17 @@ A modern, feature-rich Todo application built with Flutter and Firebase, providi
 
 ```
 lib/
-├── main.dart                 # App entry point with Firebase initialization
-├── screens/                  # Application screens
-│   ├── signin_screen.dart    # User authentication login
-│   ├── signup_screen.dart    # User registration
-│   └── todo_screen.dart      # Main task management interface
-└── widgets/                  # Reusable UI components
-    ├── custom_texfield.dart  # Custom input field component
-    └── task.dart            # Task display widget with status toggle
+├── main.dart                 # App entry point with Firebase initialization & AppBrain instance
+├── app_brain.dart           # Centralized task management and data handling
+├── models/                  # Data models
+│   └── task_model.dart      # TaskModel class with TaskStatus enum
+├── screens/                 # Application screens
+│   ├── signin_screen.dart   # User authentication login
+│   ├── signup_screen.dart   # User registration
+│   └── todo_screen.dart     # Main task management interface with FAB
+└── widgets/                 # Reusable UI components
+    ├── custom_texfield.dart # Custom input field component
+    └── task.dart           # Task display widget with TaskModel integration
 ```
 
 ## 🔧 Technical Details
@@ -94,13 +105,26 @@ lib/
 ### Key Components
 
 #### TaskWidget
-- Displays individual tasks with title and description
+- Displays individual tasks using TaskModel data structure
 - Interactive toggle functionality between pending/completed states
 - Enhanced visual feedback with size-optimized icons (30px)
 - Color-coded status indicators (purple for completed, grey for pending)
 - Material Design card layout with subtle shadows and rounded corners
 - Responsive layout with proper spacing and typography hierarchy
 - Strikethrough text effect for completed tasks
+- Direct model binding for efficient data management
+
+#### AppBrain System
+- **Centralized Management**: Global AppBrain instance for task coordination
+- **Sample Data**: Pre-loaded with demonstration tasks for immediate functionality
+- **Task List**: Dynamic list management with TaskModel objects
+- **State Coordination**: Bridge between UI components and data layer
+
+#### Task Creation Flow
+- **Floating Action Button**: Intuitive purple-themed FAB for task creation
+- **Modal Dialog**: Clean AlertDialog interface for new task input
+- **Form Fields**: Title and description input with proper labeling
+- **Action Buttons**: Cancel and Add Task options with Material Design styling
 
 #### Custom Text Fields
 - Email validation with proper formatting
@@ -138,12 +162,18 @@ lib/
 ## 🎯 Current Implementation Details
 
 ### Task Management System
+- **TaskModel Class**: Structured data model with title, description, and status properties
+- **AppBrain Pattern**: Centralized task management system with global instance
 - **StatefulWidget**: TaskWidget uses local state for immediate UI updates
-- **Status Enum**: Clean TaskStatus enum (pending/completed) for type safety
-- **Visual Feedback**: Instant visual changes when toggling task status
-- **Icon States**: 
-  - `Icons.check_circle` (purple, 30px) for completed tasks
-  - `Icons.circle_outlined` (grey, 30px) for pending tasks
+- **Model Binding**: Direct integration between UI components and TaskModel objects
+- **Dynamic Rendering**: ListView.builder for efficient task list display
+- **Sample Data**: Pre-loaded tasks for demonstration and testing
+
+### Data Architecture
+- **TaskStatus Enum**: Type-safe status management (pending/completed)
+- **Global Instance**: AppBrain singleton pattern for shared state
+- **Model Structure**: Clean separation between data models and UI components
+- **Efficient Updates**: Direct model property manipulation for status changes
 
 ### UI/UX Enhancements
 - **Card Design**: Elevated cards with 8px border radius
@@ -151,12 +181,22 @@ lib/
 - **Shadows**: Multi-layer shadow effect for depth perception
 - **Typography**: Uppercase task titles for visual hierarchy
 - **Interactive Areas**: Properly sized touch targets for accessibility
+- **Floating Action Button**: Circular purple FAB with consistent theming
+- **Modal Dialogs**: User-friendly task creation interface
+- **Visual Feedback**: Instant status changes with icon and text updates
+- **Icon States**: 
+  - `Icons.check_circle` (purple, 30px) for completed tasks
+  - `Icons.circle_outlined` (grey, 30px) for pending tasks
 
 ### Code Quality
-- Proper widget separation for maintainability
-- Consistent naming conventions throughout the codebase
-- Flutter linting rules enforced for code quality
-- Comprehensive error handling for authentication flows
+- **Clean Architecture**: Separated data models, business logic, and UI components
+- **TaskModel Pattern**: Structured approach to data management
+- **Global State**: AppBrain singleton for coordinated task management
+- **Widget Composition**: Reusable components with clear responsibilities
+- **Consistent Naming**: Following Dart and Flutter conventions throughout
+- **Flutter Linting**: Enforced code quality rules and best practices
+- **Error Handling**: Comprehensive error management for authentication flows
+- **Type Safety**: Strong typing with enums and model classes
 
 ## 🔐 Security Features
 
@@ -170,21 +210,30 @@ lib/
 ## 🚀 Future Enhancements
 
 ### Planned Features
-- [ ] Task editing and deletion
+- [x] **Task Creation**: Add new tasks via floating action button ✅
+- [x] **Task Status Toggle**: Mark tasks as completed/pending ✅
+- [x] **Data Models**: Structured TaskModel implementation ✅
+- [ ] Task editing functionality
+- [ ] Task deletion with confirmation
 - [ ] Task categories and tags
 - [ ] Due dates and reminders
 - [ ] Cloud sync across devices
 - [ ] Dark mode support
 - [ ] Task search and filtering
-- [ ] Data export functionality
+- [ ] Data persistence with local storage
+- [ ] Task reordering and prioritization
 
 ### Technical Improvements
-- [ ] State management with Provider/Bloc
-- [ ] Local storage with Hive/SQLite
-- [ ] Push notifications
+- [x] **Centralized State Management**: AppBrain pattern implementation ✅
+- [x] **Data Models**: TaskModel with proper structure ✅
+- [x] **Dynamic UI**: ListView.builder for efficient rendering ✅
+- [ ] Advanced state management with Provider/Bloc
+- [ ] Local storage with Hive/SQLite for data persistence
+- [ ] Push notifications for task reminders
 - [ ] Offline mode support
 - [ ] Unit and integration tests
 - [ ] CI/CD pipeline setup
+- [ ] Performance optimization and caching
 
 ## 📝 Development Notes
 
@@ -195,11 +244,12 @@ lib/
 - Comprehensive error handling
 
 ### Performance Considerations
-- Efficient widget rebuilding with targeted setState calls
-- Optimized list rendering with ListView.separated for smooth scrolling
-- Minimal Firebase authentication calls with session persistence
-- Lightweight widget tree structure for fast rendering
-- Proper state management to prevent unnecessary rebuilds
+- **Efficient Rendering**: ListView.builder for optimal list performance
+- **Targeted State Updates**: Local setState calls for immediate UI feedback
+- **Model-Based Updates**: Direct TaskModel property changes for efficiency
+- **Minimal Rebuilds**: Proper widget tree structure to prevent unnecessary rebuilds
+- **Firebase Optimization**: Minimal authentication calls with session persistence
+- **Memory Management**: Lightweight widget composition and proper disposal
 
 ## 🤝 Contributing
 

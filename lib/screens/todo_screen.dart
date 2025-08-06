@@ -3,11 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:todo_starter/main.dart';
 import 'package:todo_starter/models/task_model.dart';
 import 'package:todo_starter/screens/signin_screen.dart';
-import 'package:todo_starter/widgets/task.dart';
+import 'package:todo_starter/widgets/task._item.dart';
 
-class TodoScreen extends StatelessWidget {
+class TodoScreen extends StatefulWidget {
   const TodoScreen({super.key});
 
+  @override
+  State<TodoScreen> createState() => _TodoScreenState();
+}
+
+class _TodoScreenState extends State<TodoScreen> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +66,14 @@ class TodoScreen extends StatelessWidget {
                 .tasks
                 .length, // Example count, replace with your task list length
             itemBuilder: (context, index) {
-              return TaskWidget(model: appBrain.tasks[index]);
+              final task = appBrain.tasks[index];
+              return TaskWidget(
+                model: task,
+                emptyFun: () {
+                  appBrain.removeTask(task.id);
+                  setState(() {});
+                },
+              );
             },
           ),
         ),
@@ -78,9 +92,11 @@ class TodoScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextField(
+                      controller: _titleController,
                       decoration: InputDecoration(labelText: 'Task Title'),
                     ),
                     TextField(
+                      controller: _descriptionController,
                       decoration: InputDecoration(labelText: 'Description'),
                     ),
                   ],
@@ -95,7 +111,17 @@ class TodoScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // Logic to add the task
+                      appBrain.addTask(
+                        TaskModel(
+                          title: _titleController.text,
+                          description: _descriptionController.text,
+                          status: TaskStatus.pending,
+                        ),
+                      );
+                      _titleController.clear();
+                      _descriptionController.clear();
                       Navigator.of(context).pop();
+                      setState(() {});
                     },
                     child: Text('Add Task'),
                   ),

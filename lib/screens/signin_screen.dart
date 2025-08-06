@@ -128,7 +128,6 @@ class _SigninScreenState extends State<SigninScreen> {
                                   );
                                 } on FirebaseAuthException catch (e) {
                                   String message;
-                                  print('e.code: ${e.code}');
                                   switch (e.code.toString()) {
                                     case 'user-not-found':
                                       message =
@@ -159,7 +158,6 @@ class _SigninScreenState extends State<SigninScreen> {
                                   );
                                 } catch (e) {
                                   // Handle errors here, e.g., show a snackbar
-                                  print("An error has occured ${e.toString()}");
                                 }
                               }
                             },
