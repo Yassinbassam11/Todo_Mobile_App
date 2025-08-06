@@ -1,23 +1,10 @@
 import 'package:flutter/material.dart';
-
-enum TaskStatus { pending, completed }
-
-TaskStatus status = TaskStatus.pending;
-String title = "";
-String description = "";
+import 'package:todo_starter/models/task_model.dart';
 
 // ignore: must_be_immutable
 class TaskWidget extends StatefulWidget {
-  TaskWidget({
-    super.key,
-    required this.title,
-    required this.description,
-    this.status = TaskStatus.pending,
-  });
-
-  String title;
-  String description;
-  TaskStatus status;
+  final TaskModel model;
+  TaskWidget({super.key, required this.model});
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();
@@ -46,15 +33,14 @@ class _TaskWidgetState extends State<TaskWidget> {
           IconButton(
             onPressed: () {
               setState(() {
-                if (widget.status == TaskStatus.pending) {
-                  status = TaskStatus.completed;
-                } else if (widget.status == TaskStatus.completed) {
-                  status = TaskStatus.pending;
+                if (widget.model.status == TaskStatus.pending) {
+                  widget.model.status = TaskStatus.completed;
+                } else if (widget.model.status == TaskStatus.completed) {
+                  widget.model.status = TaskStatus.pending;
                 }
-                widget.status = status;
               });
             },
-            icon: widget.status == TaskStatus.completed
+            icon: widget.model.status == TaskStatus.completed
                 ? Icon(Icons.check_circle, color: Colors.purple[800], size: 30)
                 : Icon(Icons.circle_outlined, size: 30, color: Colors.grey),
           ),
@@ -62,20 +48,20 @@ class _TaskWidgetState extends State<TaskWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.title.toUpperCase(),
+                widget.model.title.toUpperCase(),
                 style: TextStyle(
-                  color: widget.status == TaskStatus.completed
+                  color: widget.model.status == TaskStatus.completed
                       ? Colors.grey
                       : Colors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  decoration: widget.status == TaskStatus.completed
+                  decoration: widget.model.status == TaskStatus.completed
                       ? TextDecoration.lineThrough
                       : TextDecoration.none,
                 ),
               ),
               Text(
-                widget.description,
+                widget.model.description,
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
             ],

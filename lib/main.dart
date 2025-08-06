@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_starter/app_brain.dart';
 // ignore: unused_import
 import 'package:todo_starter/screens/signin_screen.dart';
 // ignore: unused_import
@@ -9,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 // ignore: unused_import
 import 'package:todo_starter/screens/todo_screen.dart';
 
+final AppBrain appBrain = AppBrain();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

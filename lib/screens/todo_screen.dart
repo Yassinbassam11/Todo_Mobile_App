@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_starter/main.dart';
+import 'package:todo_starter/models/task_model.dart';
 import 'package:todo_starter/screens/signin_screen.dart';
 import 'package:todo_starter/widgets/task.dart';
 
@@ -50,30 +52,15 @@ class TodoScreen extends StatelessWidget {
       ),
       body: Center(
         child: SafeArea(
-          child: ListView.separated(
+          child: ListView.builder(
             padding: EdgeInsets.only(top: 12),
             //physics: BouncingScrollPhysics(),
-            separatorBuilder: (context, index) => SizedBox(height: 0),
-            itemCount: 10, // Example count, replace with your task list length
-            itemBuilder: (context, index) => TaskWidget(
-              title: "Read a book",
-              description: "Read 'The Great Gatsby'",
-            ),
-            // child: Column(
-            //   children: [
-            //     SizedBox(height: 12),
-            //     TaskWidget(
-            //       title: "Read a book",
-            //       description: "Read 'The Great Gatsby'",
-            //       status: TaskStatus.completed,
-            //     ),
-            //     TaskWidget(
-            //       title: "Write a blog post",
-            //       description: "Write about Flutter state management",
-            //       status: TaskStatus.pending,
-            //     ),
-            //   ],
-            // ),
+            itemCount: appBrain
+                .tasks
+                .length, // Example count, replace with your task list length
+            itemBuilder: (context, index) {
+              return TaskWidget(model: appBrain.tasks[index]);
+            },
           ),
         ),
       ),
