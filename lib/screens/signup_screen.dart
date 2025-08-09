@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:todo_starter/screens/signin_screen.dart';
 import 'package:todo_starter/screens/todo_screen.dart';
+import 'package:todo_starter/widgets/custom_button.dart';
 import 'package:todo_starter/widgets/custom_texfield.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -124,84 +125,55 @@ class _SignupScreenState extends State<SignupScreen> {
                     isObscureText: isObscure,
                   ),
                   SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30.0,
-                      vertical: 10.0,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                // Process the sign-up
-                                try {
-                                  await FirebaseAuth.instance
-                                      .createUserWithEmailAndPassword(
-                                        email: emailController.text,
-                                        password:
-                                            confirmPasswordController.text,
-                                      );
-                                  FirebaseAuth.instance.currentUser!
-                                      .updateDisplayName(
-                                        fullNameController.text,
-                                      );
-                                  // Navigate to the todo screen or home screen
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => TodoScreen(),
-                                    ),
-                                    (route) => false,
-                                  );
-                                } on FirebaseAuthException catch (e) {
-                                  String message;
-                                  switch (e.code) {
-                                    case 'email-already-in-use':
-                                      message =
-                                          'This email is already registered. Please sign in instead.';
-                                      break;
-                                    case 'weak-password':
-                                      message =
-                                          'Password is too weak. Please use at least 6 characters.';
-                                      break;
-                                    case 'invalid-email':
-                                      message =
-                                          'Please enter a valid email address.';
-                                      break;
-                                    default:
-                                      message =
-                                          'Registration failed: ${e.message}';
-                                  }
+                  CustomButton(
+                    text: "Sign Up",
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        // Process the sign-up
+                        try {
+                          await FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
+                                email: emailController.text,
+                                password: confirmPasswordController.text,
+                              );
+                          FirebaseAuth.instance.currentUser!.updateDisplayName(
+                            fullNameController.text,
+                          );
+                          // Navigate to the todo screen or home screen
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TodoScreen(),
+                            ),
+                            (route) => false,
+                          );
+                        } on FirebaseAuthException catch (e) {
+                          String message;
+                          switch (e.code) {
+                            case 'email-already-in-use':
+                              message =
+                                  'This email is already registered. Please sign in instead.';
+                              break;
+                            case 'weak-password':
+                              message =
+                                  'Password is too weak. Please use at least 6 characters.';
+                              break;
+                            case 'invalid-email':
+                              message = 'Please enter a valid email address.';
+                              break;
+                            default:
+                              message = 'Registration failed: ${e.message}';
+                          }
 
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(message)),
-                                  );
-                                } catch (e) {
-                                  // Handle errors here, e.g., show a snackbar
-                                  print("An error has occured ${e.toString()}");
-                                }
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.purple[800],
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 30.0,
-                                vertical: 12.0,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                            child: Text(
-                              'Sign Up',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(message)));
+                        } catch (e) {
+                          // Handle errors here, e.g., show a snackbar
+                          print("An error has occured ${e.toString()}");
+                        }
+                      }
+                    },
                   ),
                   SizedBox(height: 40),
                   Text.rich(

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:todo_starter/main.dart';
 import 'package:todo_starter/models/task_model.dart';
 import 'package:todo_starter/screens/signin_screen.dart';
+import 'package:todo_starter/widgets/custom_button.dart';
+import 'package:todo_starter/widgets/custom_texfield.dart';
 import 'package:todo_starter/widgets/task._item.dart';
 
 class TodoScreen extends StatefulWidget {
@@ -36,6 +38,8 @@ class _TodoScreenState extends State<TodoScreen> {
             icon: Icon(Icons.delete),
             onPressed: () {
               // Add delete task logic here
+              appBrain.removeAllTasks();
+              setState(() {});
             },
           ),
           IconButton(
@@ -83,52 +87,128 @@ class _TodoScreenState extends State<TodoScreen> {
         shape: const CircleBorder(),
         onPressed: () {
           // Add new task logic here
-          showDialog(
+          showModalBottomSheet(
             context: context,
             builder: (context) {
-              return AlertDialog(
-                title: Text('Add New Task'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextField(
-                      controller: _titleController,
-                      decoration: InputDecoration(labelText: 'Task Title'),
-                    ),
-                    TextField(
-                      controller: _descriptionController,
-                      decoration: InputDecoration(labelText: 'Description'),
-                    ),
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Cancel'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Logic to add the task
-                      appBrain.addTask(
-                        TaskModel(
-                          title: _titleController.text,
-                          description: _descriptionController.text,
-                          status: TaskStatus.pending,
+              return Container(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 20),
+                        Text(
+                          "Add New Task",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.purple[800],
+                          ),
                         ),
-                      );
-                      _titleController.clear();
-                      _descriptionController.clear();
-                      Navigator.of(context).pop();
-                      setState(() {});
-                    },
-                    child: Text('Add Task'),
+                        SizedBox(height: 20),
+                        CustomTextField(
+                          controller: _titleController,
+                          keyboardType: TextInputType.text,
+                          hintText: "Enter task title",
+                          prefixIcon: IconButton(
+                            icon: Icon(Icons.title),
+                            onPressed: () {},
+                          ),
+                        ),
+                        CustomTextField(
+                          controller: _descriptionController,
+                          keyboardType: TextInputType.text,
+                          hintText: "Enter task description",
+                          prefixIcon: IconButton(
+                            icon: Icon(Icons.description),
+                            onPressed: () {},
+                          ),
+                        ),
+                        CustomButton(
+                          text: "Add Task",
+                          onPressed: () {
+                            appBrain.addTask(
+                              TaskModel(
+                                title: _titleController.text,
+                                description: _descriptionController.text,
+                                status: TaskStatus.pending,
+                              ),
+                            );
+                            _titleController.clear();
+                            _descriptionController.clear();
+                            Navigator.of(context).pop();
+                            setState(() {});
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        TextButton(
+                          onPressed: () {
+                            // Logic to cancel the task addition
+                            _titleController.clear();
+                            _descriptionController.clear();
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(
+                              color: Colors.purple[800],
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
+                ),
               );
             },
           );
+          // showDialog(
+          //   context: context,
+          //   builder: (context) {
+          //     return AlertDialog(
+          //       title: Text('Add New Task'),
+          //       content: Column(
+          //         mainAxisSize: MainAxisSize.min,
+          //         children: [
+          //           TextField(
+          //             controller: _titleController,
+          //             decoration: InputDecoration(labelText: 'Task Title'),
+          //           ),
+          //           TextField(
+          //             controller: _descriptionController,
+          //             decoration: InputDecoration(labelText: 'Description'),
+          //           ),
+          //         ],
+          //       ),
+          //       actions: [
+          //         TextButton(
+          //           onPressed: () {
+          //             Navigator.of(context).pop();
+          //           },
+          //           child: Text('Cancel'),
+          //         ),
+          //         ElevatedButton(
+          //           onPressed: () {
+          //             // Logic to add the task
+          //             appBrain.addTask(
+          //               TaskModel(
+          //                 title: _titleController.text,
+          //                 description: _descriptionController.text,
+          //                 status: TaskStatus.pending,
+          //               ),
+          //             );
+          //             _titleController.clear();
+          //             _descriptionController.clear();
+          //             Navigator.of(context).pop();
+          //             setState(() {});
+          //           },
+          //           child: Text('Add Task'),
+          //         ),
+          //       ],
+          //     );
+          //   },
+          // );
         },
         child: Icon(Icons.add, color: Colors.white),
       ),

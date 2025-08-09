@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:todo_starter/screens/todo_screen.dart';
+import 'package:todo_starter/widgets/custom_button.dart';
 import 'package:todo_starter/widgets/custom_texfield.dart';
 import 'package:todo_starter/screens/signup_screen.dart';
 
@@ -100,85 +101,57 @@ class _SigninScreenState extends State<SigninScreen> {
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 30.0,
-                      vertical: 10.0,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              if (_formKey.currentState?.validate() ?? false) {
-                                // Handle sign in logic
-                                try {
-                                  await FirebaseAuth.instance
-                                      .signInWithEmailAndPassword(
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                      );
-                                  // Navigate to the todo screen or home screen
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => TodoScreen(),
-                                    ),
-                                    (route) => false,
-                                  );
-                                } on FirebaseAuthException catch (e) {
-                                  String message;
-                                  switch (e.code.toString()) {
-                                    case 'user-not-found':
-                                      message =
-                                          'No account found with this email. Please sign up first.';
-                                      break;
-                                    case 'wrong-password':
-                                      message =
-                                          'Incorrect password. Please try again.';
-                                      break;
-                                    case 'invalid-email':
-                                      message =
-                                          'Please enter a valid email address.';
-                                      break;
-                                    case 'user-disabled':
-                                      message =
-                                          'This account has been disabled.';
-                                      break;
-                                    case 'invalid-credential':
-                                      message =
-                                          'Invalid email or password. Please check your credentials and try again.';
-                                      break;
-                                    default:
-                                      message = 'Sign in failed: ${e.message}';
-                                  }
+                  CustomButton(
+                    text: 'Sign In',
+                    onPressed: () async {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        // Handle sign in logic
+                        try {
+                          await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              );
+                          // Navigate to the todo screen or home screen
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TodoScreen(),
+                            ),
+                            (route) => false,
+                          );
+                        } on FirebaseAuthException catch (e) {
+                          String message;
+                          switch (e.code.toString()) {
+                            case 'user-not-found':
+                              message =
+                                  'No account found with this email. Please sign up first.';
+                              break;
+                            case 'wrong-password':
+                              message = 'Incorrect password. Please try again.';
+                              break;
+                            case 'invalid-email':
+                              message = 'Please enter a valid email address.';
+                              break;
+                            case 'user-disabled':
+                              message = 'This account has been disabled.';
+                              break;
+                            case 'invalid-credential':
+                              message =
+                                  'Invalid email or password. Please check your credentials and try again.';
+                              break;
+                            default:
+                              message = 'Sign in failed: ${e.message}';
+                          }
 
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(message)),
-                                  );
-                                } catch (e) {
-                                  // Handle errors here, e.g., show a snackbar
-                                }
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.purple[800],
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 30.0,
-                                vertical: 12.0,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                            child: Text(
-                              'Sign In',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(message)));
+                        } catch (e) {
+                          // Handle errors here, e.g., show a snackbar
+                        }
+                      }
+                    },
                   ),
                   SizedBox(height: 20),
                   Text.rich(

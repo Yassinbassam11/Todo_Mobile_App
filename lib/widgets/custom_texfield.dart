@@ -4,7 +4,7 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     required this.controller,
     required this.keyboardType,
-    required this.prefixIcon,
+    this.prefixIcon,
     required this.hintText,
     this.isObscureText = false,
     this.suffixIcon,
@@ -14,7 +14,7 @@ class CustomTextField extends StatelessWidget {
 
   final TextEditingController controller;
   final TextInputType keyboardType;
-  final IconButton prefixIcon;
+  final IconButton? prefixIcon;
   final bool isObscureText;
   final String hintText;
   final IconButton? suffixIcon;

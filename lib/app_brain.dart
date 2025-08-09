@@ -10,7 +10,7 @@ class AppBrain {
     TaskModel(
       title: "Task 2",
       description: "Description for Task 2",
-      status: TaskStatus.completed,
+      status: TaskStatus.pending,
     ),
     TaskModel(
       title: "Task 3",
@@ -25,5 +25,9 @@ class AppBrain {
 
   void removeTask(String id) {
     tasks.removeWhere((task) => task.id == id);
+  }
+
+  void removeAllTasks() {
+    tasks.clear();
   }
 }
