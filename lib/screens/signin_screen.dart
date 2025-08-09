@@ -18,8 +18,8 @@ class SigninScreen extends StatefulWidget {
 class _SigninScreenState extends State<SigninScreen> {
   bool isObscure = true;
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,22 +47,22 @@ class _SigninScreenState extends State<SigninScreen> {
                   ),
                   SizedBox(height: 20),
                   CustomTextField(
-                    controller: emailController,
+                    controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: IconButton(
                       icon: Icon(Icons.email),
                       onPressed: null,
                     ),
                     hintText: 'Email',
-                    validator: (emailController) {
-                      if (!emailController!.contains('@')) {
+                    validator: (_emailController) {
+                      if (!_emailController!.contains('@')) {
                         return 'Please enter a valid email address';
                       }
                       return null;
                     },
                   ),
                   CustomTextField(
-                    controller: passwordController,
+                    controller: _passwordController,
                     keyboardType: TextInputType.visiblePassword,
                     prefixIcon: IconButton(
                       icon: Icon(Icons.lock),
@@ -109,8 +109,8 @@ class _SigninScreenState extends State<SigninScreen> {
                         try {
                           await FirebaseAuth.instance
                               .signInWithEmailAndPassword(
-                                email: emailController.text,
-                                password: passwordController.text,
+                                email: _emailController.text,
+                                password: _passwordController.text,
                               );
                           // Navigate to the todo screen or home screen
                           Navigator.pushAndRemoveUntil(

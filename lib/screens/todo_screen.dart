@@ -134,6 +134,13 @@ class _TodoScreenState extends State<TodoScreen> {
                                 status: TaskStatus.pending,
                               ),
                             );
+                            // appBrain.addTaskToFirestore(
+                            //   TaskModel(
+                            //     title: _titleController.text,
+                            //     description: _descriptionController.text,
+                            //     status: TaskStatus.pending,
+                            //   ),
+                            // );
                             _titleController.clear();
                             _descriptionController.clear();
                             Navigator.of(context).pop();

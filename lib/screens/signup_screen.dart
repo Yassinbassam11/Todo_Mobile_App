@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // ignore: unused_import
 import 'package:firebase_core/firebase_core.dart';
@@ -20,10 +21,10 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   bool isObscure = true;
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController fullNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
       TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   SizedBox(height: 20),
                   CustomTextField(
-                    controller: fullNameController,
+                    controller: _fullNameController,
                     keyboardType: TextInputType.name,
                     prefixIcon: IconButton(
                       icon: Icon(Icons.person),
@@ -61,22 +62,22 @@ class _SignupScreenState extends State<SignupScreen> {
                     hintText: 'Full Name',
                   ),
                   CustomTextField(
-                    controller: emailController,
+                    controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: IconButton(
                       icon: Icon(Icons.email),
                       onPressed: null,
                     ),
                     hintText: 'Email',
-                    validator: (emailController) {
-                      if (!emailController!.contains('@')) {
+                    validator: (_emailController) {
+                      if (!_emailController!.contains('@')) {
                         return 'Please enter a valid email address';
                       }
                       return null;
                     },
                   ),
                   CustomTextField(
-                    controller: passwordController,
+                    controller: _passwordController,
                     keyboardType: TextInputType.visiblePassword,
                     prefixIcon: IconButton(
                       icon: Icon(Icons.lock),
@@ -97,7 +98,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     isObscureText: isObscure,
                   ),
                   CustomTextField(
-                    controller: confirmPasswordController,
+                    controller: _confirmPasswordController,
                     keyboardType: TextInputType.visiblePassword,
                     prefixIcon: IconButton(
                       icon: Icon(Icons.lock),
@@ -115,9 +116,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       },
                     ),
                     hintText: 'Confirm Password',
-                    validator: (confirmPasswordController) {
-                      if (confirmPasswordController !=
-                          passwordController.text) {
+                    validator: (_confirmPasswordController) {
+                      if (_confirmPasswordController !=
+                          _passwordController.text) {
                         return 'Passwords do not match';
                       }
                       return null;
@@ -133,11 +134,18 @@ class _SignupScreenState extends State<SignupScreen> {
                         try {
                           await FirebaseAuth.instance
                               .createUserWithEmailAndPassword(
-                                email: emailController.text,
-                                password: confirmPasswordController.text,
+                                email: _emailController.text,
+                                password: _confirmPasswordController.text,
                               );
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .set({
+                                'fullName': _fullNameController.text,
+                                'email': _emailController.text,
+                              });
                           FirebaseAuth.instance.currentUser!.updateDisplayName(
-                            fullNameController.text,
+                            _fullNameController.text,
                           );
                           // Navigate to the todo screen or home screen
                           Navigator.pushAndRemoveUntil(
