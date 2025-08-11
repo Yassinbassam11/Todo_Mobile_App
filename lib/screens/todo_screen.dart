@@ -17,6 +17,19 @@ class TodoScreen extends StatefulWidget {
 class _TodoScreenState extends State<TodoScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+
+  void loadTaks() {
+    // Load tasks from the appBrain
+    appBrain.getTasks();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    loadTaks();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,8 +87,10 @@ class _TodoScreenState extends State<TodoScreen> {
               return TaskWidget(
                 model: task,
                 emptyFun: () {
-                  appBrain.removeTask(task.id);
-                  setState(() {});
+                  if (task.id != null) {
+                    appBrain.removeTask(task.id!);
+                    setState(() {});
+                  }
                 },
               );
             },
@@ -129,6 +144,7 @@ class _TodoScreenState extends State<TodoScreen> {
                           onPressed: () {
                             appBrain.addTask(
                               TaskModel(
+                                id: UniqueKey().toString(),
                                 title: _titleController.text,
                                 description: _descriptionController.text,
                                 status: TaskStatus.pending,

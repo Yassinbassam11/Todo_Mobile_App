@@ -41,6 +41,8 @@ class _TaskWidgetState extends State<TaskWidget> {
                 } else if (widget.model.status == TaskStatus.completed) {
                   widget.model.status = TaskStatus.pending;
                 }
+                // Update the task status in the appBrain
+                appBrain.updateTaskState(widget.model);
               });
             },
             icon: widget.model.status == TaskStatus.completed
