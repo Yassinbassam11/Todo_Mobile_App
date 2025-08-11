@@ -1,3 +1,4 @@
+// ignore: unused_import
 import 'package:flutter/material.dart';
 
 enum TaskStatus { pending, completed }
@@ -9,10 +10,11 @@ class TaskModel {
   TaskStatus status;
 
   TaskModel({
+    required this.id,
     required this.title,
     required this.description,
-    this.status = TaskStatus.pending,
+    required this.status,
+
     // this.id=  UniqueKey().toString(),
-    required this.id,
   });
 }
