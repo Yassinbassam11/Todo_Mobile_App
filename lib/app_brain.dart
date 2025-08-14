@@ -26,8 +26,21 @@ class AppBrain {
     ),
   ];
 
-  void removeAllTasks() {
+  Future<void> removeAllTasks() async {
     tasks.clear();
+
+    if (currentUserId != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUserId)
+          .collection('tasks')
+          .get()
+          .then((snapshot) {
+            for (var doc in snapshot.docs) {
+              doc.reference.delete();
+            }
+          });
+    }
   }
 
   Future<void> addTask(TaskModel task) async {
