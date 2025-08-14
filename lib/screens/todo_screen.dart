@@ -17,17 +17,27 @@ class TodoScreen extends StatefulWidget {
 class _TodoScreenState extends State<TodoScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-
-  void loadTaks() {
-    // Load tasks from the appBrain
-    appBrain.getTasks();
-    setState(() {});
-  }
+  bool _isLoading = true;
 
   @override
   void initState() {
-    loadTaks();
+    _loadTasks();
     super.initState();
+  }
+
+  void _loadTasks() async {
+    setState(() {
+      _isLoading = true; // Show loading indicator
+    });
+    // Clear local tasks first to avoid showing stale data
+    appBrain.tasks.clear();
+    setState(() {}); // Update UI to show empty state
+
+    await appBrain.getTasks(); // Load from Firestore
+    setState(() {}); // Update UI with Firestore data
+    setState(() {
+      _isLoading = false; // Hide loading indicator
+    });
   }
 
   @override
@@ -76,25 +86,27 @@ class _TodoScreenState extends State<TodoScreen> {
       ),
       body: Center(
         child: SafeArea(
-          child: ListView.builder(
-            padding: EdgeInsets.only(top: 12),
-            //physics: BouncingScrollPhysics(),
-            itemCount: appBrain
-                .tasks
-                .length, // Example count, replace with your task list length
-            itemBuilder: (context, index) {
-              final task = appBrain.tasks[index];
-              return TaskWidget(
-                model: task,
-                emptyFun: () {
-                  if (task.id != null) {
-                    appBrain.removeTask(task.id!);
-                    setState(() {});
-                  }
-                },
-              );
-            },
-          ),
+          child: _isLoading
+              ? CircularProgressIndicator(color: Colors.purple[800])
+              : ListView.builder(
+                  padding: EdgeInsets.only(top: 12),
+                  //physics: BouncingScrollPhysics(),
+                  itemCount: appBrain
+                      .tasks
+                      .length, // Example count, replace with your task list length
+                  itemBuilder: (context, index) {
+                    final task = appBrain.tasks[index];
+                    return TaskWidget(
+                      model: task,
+                      emptyFun: () {
+                        if (task.id != null) {
+                          appBrain.removeTask(task.id!);
+                          setState(() {});
+                        }
+                      },
+                    );
+                  },
+                ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -186,52 +198,6 @@ class _TodoScreenState extends State<TodoScreen> {
               );
             },
           );
-          // showDialog(
-          //   context: context,
-          //   builder: (context) {
-          //     return AlertDialog(
-          //       title: Text('Add New Task'),
-          //       content: Column(
-          //         mainAxisSize: MainAxisSize.min,
-          //         children: [
-          //           TextField(
-          //             controller: _titleController,
-          //             decoration: InputDecoration(labelText: 'Task Title'),
-          //           ),
-          //           TextField(
-          //             controller: _descriptionController,
-          //             decoration: InputDecoration(labelText: 'Description'),
-          //           ),
-          //         ],
-          //       ),
-          //       actions: [
-          //         TextButton(
-          //           onPressed: () {
-          //             Navigator.of(context).pop();
-          //           },
-          //           child: Text('Cancel'),
-          //         ),
-          //         ElevatedButton(
-          //           onPressed: () {
-          //             // Logic to add the task
-          //             appBrain.addTask(
-          //               TaskModel(
-          //                 title: _titleController.text,
-          //                 description: _descriptionController.text,
-          //                 status: TaskStatus.pending,
-          //               ),
-          //             );
-          //             _titleController.clear();
-          //             _descriptionController.clear();
-          //             Navigator.of(context).pop();
-          //             setState(() {});
-          //           },
-          //           child: Text('Add Task'),
-          //         ),
-          //       ],
-          //     );
-          //   },
-          // );
         },
         child: Icon(Icons.add, color: Colors.white),
       ),
